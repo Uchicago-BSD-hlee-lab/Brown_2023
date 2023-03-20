@@ -1,0 +1,10 @@
+$HOME/fastq/control_npp7_prp17_sRNA.fastq.gz,JB.20180416_RRS.L4440,WS230,17,40
+$HOME/fastq/npp7_sRNA.fastq.gz,JB.20180416_RRS.npp7,WS230,17,40
+$HOME/fastq/prp17_sRNA.fastq.gz,JB.20180416_RRS.prp17,WS230,17,40
+$HOME/fastq/control_snpc4_sRNA.fastq.gz,JB.20181018_RRS.L4440,WS230,17,40
+$HOME/fastq/snpc4_sRNA.fastq.gz,JB.20181018_RRS.snpc4,WS230,17,40
+$HOME/fastq/control_ints1_dic1_sRNA.fastq.gz,JB.20181018_RRS.L4440_ints,WS230,17,40
+$HOME/fastq/ints1_sRNA.fastq.gz,JB.20181018_RRS.ints1,WS230,17,40
+$HOME/fastq/dic1_sRNA.fastq.gz,JB.20181018_RRS.dic1,WS230,17,40
+$HOME/fastq/control_capseq.fastq.gz,JB.20201013_ev,WS230,17,100
+$HOME/fastq/ints1_capseq.fastq.gz,JB.20201013_ints1,WS230,17,100
