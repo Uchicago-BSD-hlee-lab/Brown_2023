@@ -1,6 +1,4 @@
-# Brown_2023
-
-# Sensitized piRNA reporter identifies multiple RNA processing factors involved in piRNA-mediated gene silencing
+# Brown_2023: Sensitized piRNA reporter identifies multiple RNA processing factors involved in piRNA-mediated gene silencing
 
 This repository holds all scripts necessary to perform small RNA alignment and plot construction described in Brown et. al. 2023.
 
@@ -112,7 +110,7 @@ bowtie-build ce_hairpin.dna.fa ce_hairpin.dna
 
 ```
 
-Compressed fastq.gz files must be located in the fastq directory.
+Note: Compressed fastq.gz files must be located in the fastq directory.
 
 ### Alignment script
 
