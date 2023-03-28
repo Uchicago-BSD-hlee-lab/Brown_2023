@@ -2,6 +2,8 @@
 
 HOME=`pwd`
 
+bowtie_cores=16
+
 main_dir=$HOME/scratch/
 mkdir $main_dir
 cd $main_dir
@@ -41,7 +43,7 @@ pipeline () {
 	$HOME/scripts/inserts2uniqreads.pl $name.inserts $min $max > $name.inserts.uniq.reads
 
 	# map to known rna and remove them
-	awk '{ print ">" $1 "\n" $1 }' $name.inserts.uniq.reads | bowtie $HOME/reference/$WSnum/ce_WS230.rna.knownRNA -p 4 -v 0 --best --strata -a -f - > $name.inserts.knownRNA.bowtie
+	awk '{ print ">" $1 "\n" $1 }' $name.inserts.uniq.reads | bowtie $HOME/reference/$WSnum/ce_WS230.rna.knownRNA -p ${bowtie_cores} -v 0 --best --strata -a -f - > $name.inserts.knownRNA.bowtie
 	cut -f1 $name.inserts.knownRNA.bowtie | uniq > $name.inserts.id
 
 	$HOME/scripts/weedLines $name.inserts.id $name.inserts.uniq.reads $name.inserts.xk.uniq.reads
@@ -50,7 +52,7 @@ pipeline () {
 	$HOME/scripts/bowtie_all2ntm_mod.pl $name.inserts.uniq.reads $name.inserts.knownRNA.bowtie > $name.inserts.knownRNA.uniq.reads.v0.ntm
 
 	# map to hairpin sequences and remove them
-	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xk.uniq.reads | bowtie $HOME/reference/$WSnum/ce.hairpin -p 4 -v 0 --best --strata -a -f - > $name.inserts.xk.hairpin.bowtie
+	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xk.uniq.reads | bowtie $HOME/reference/$WSnum/ce_hairpin.dna -p ${bowtie_cores} -v 0 --best --strata -a -f - > $name.inserts.xk.hairpin.bowtie
 	cut -f1 $name.inserts.xk.hairpin.bowtie | uniq > $name.inserts.xk.id
 
 	$HOME/scripts/weedLines $name.inserts.xk.id $name.inserts.xk.uniq.reads $name.inserts.xkxh.uniq.reads
@@ -59,12 +61,12 @@ pipeline () {
 	$HOME/scripts/bowtie_all2ntm_mod.pl $name.inserts.xk.uniq.reads $name.inserts.xk.hairpin.bowtie > $name.inserts.xk.hairpin.uniq.reads.v0.ntm
 
 	# map to genome
-	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xk.uniq.reads | bowtie $HOME/reference/$WSnum/c_elegans.WS230.genomic -p 4 -v 0 --best --strata -a --un $name.inserts.xk.uniq.reads.v0.unMap -f - > $name.inserts.xk.uniq.reads.v0.bowtie
-	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xkxh.uniq.reads | bowtie $HOME/reference/$WSnum/c_elegans.WS230.genomic -p 4 -v 0 --best --strata -a --un $name.inserts.xkxh.uniq.reads.v0.unMap -f - > $name.inserts.xkxh.uniq.reads.v0.bowtie
+	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xk.uniq.reads | bowtie $HOME/reference/$WSnum/c_elegans.WS230.genomic -p ${bowtie_cores} -v 0 --best --strata -a --un $name.inserts.xk.uniq.reads.v0.unMap -f - > $name.inserts.xk.uniq.reads.v0.bowtie
+	awk '{ print ">" $1 "\n" $1 }' $name.inserts.xkxh.uniq.reads | bowtie $HOME/reference/$WSnum/c_elegans.WS230.genomic -p ${bowtie_cores} -v 0 --best --strata -a --un $name.inserts.xkxh.uniq.reads.v0.unMap -f - > $name.inserts.xkxh.uniq.reads.v0.bowtie
 	 
 	# map to splice junctions
-	bowtie $HOME/reference/$WSnum/ce_WS230.coding_transcript.juncs -p 4 -v 0 --best --strata -a --un $name.inserts.xk.uniq.reads.v0.unMap.unJuncs -f $name.inserts.xk.uniq.reads.v0.unMap > $name.inserts.xk.uniq.reads.juncs.v0.bowtie
-	bowtie $HOME/reference/$WSnum/ce_WS230.coding_transcript.juncs -p 4 -v 0 --best --strata -a --un $name.inserts.xkxh.uniq.reads.v0.unMap.unJuncs -f $name.inserts.xkxh.uniq.reads.v0.unMap > $name.inserts.xkxh.uniq.reads.juncs.v0.bowtie
+	bowtie $HOME/reference/$WSnum/ce_WS230.coding_transcript.juncs -p ${bowtie_cores} -v 0 --best --strata -a --un $name.inserts.xk.uniq.reads.v0.unMap.unJuncs -f $name.inserts.xk.uniq.reads.v0.unMap > $name.inserts.xk.uniq.reads.juncs.v0.bowtie
+	bowtie $HOME/reference/$WSnum/ce_WS230.coding_transcript.juncs -p ${bowtie_cores} -v 0 --best --strata -a --un $name.inserts.xkxh.uniq.reads.v0.unMap.unJuncs -f $name.inserts.xkxh.uniq.reads.v0.unMap > $name.inserts.xkxh.uniq.reads.juncs.v0.bowtie
 
 	# convert all bowtie files to ntm
 	$HOME/scripts/bowtie_all2ntm_mod.pl $name.inserts.xk.uniq.reads   $name.inserts.xk.uniq.reads.v0.bowtie   > $name.inserts.xk.uniq.reads.v0.ntm
@@ -114,7 +116,7 @@ pipeline () {
 	cat $name.inserts.xkxh.uniq.reads.juncs.v0.ntm | awk -F "\t" '{ OFS="\t"; if(length($4) >= 21 && length($4) <= 23){print $0; } }' | awk '{if(substr($4,0,1)=="G"){print $0; } }' >$name.inserts.xkxh.uniq.reads.juncs.v0.22G.ntm
 
 	cat $name.inserts.xkxh.uniq.reads.v0.22G.ntm $name.inserts.xkxh.uniq.reads.juncs.v0.22G.ntm | intersectBed -a stdin -b $HOME/reference/$WSnum/ce_WS230.coding_transcript.exon.merge.gene.bed -wo | $HOME/scripts/intersectBed2Best.pl > tmp2
-	Rscript /gpfs/data/hlee-lab/lib/pipeline.ce.quantify.gfp.R tmp2 $name.inserts.xkxh.uniq.reads.v0.22G.mrna $num2 WBGene WS230
+	Rscript pipeline.ce.quantify.tu.R tmp2 $name.inserts.xkxh.uniq.reads.v0.22G.mrna $num2 WBGene WS230
 
 	## quantify the 22G pseudogene
 	intersectBed -a $name.inserts.xkxh.uniq.reads.v0.22G.ntm -b $HOME/reference/$WSnum/ce_WS230.pseudogene.exon.merge.gene.bed -wo | $HOME/scripts/intersectBed2Best.pl > tmp2
@@ -149,7 +151,7 @@ pipeline () {
 	gzip $name.inserts.xk.uniq.reads
 	gzip $name.inserts.xkxh.uniq.reads
 	gzip $name.inserts.knownRNA.uniq.reads
-	gzip $name.inserts.hairpin.uniq.reads
+	gzip $name.inserts.xk.hairpin.uniq.reads
 	gzip *.unMap*	
 
 	mkdir $ou_path/$name
