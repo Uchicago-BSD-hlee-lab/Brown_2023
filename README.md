@@ -8,7 +8,96 @@ This repository holds all scripts necessary to perform small RNA alignment and p
 
 ### Preparation and requirements
 
-To run the pipeline script, bowtie v1.2.1.1, bedtools v2.30.0, and R v4.0.3 must be installed.
+First, clone repository into working directory:
+
+```
+git clone https://github.com/jordan-scot-brown/Brown_2023.git
+```
+
+To run the pipeline script, bowtie v1.2.1.1, bedtools v2.30.0, R v4.0.3, and various R packages must be installed. If these requirements are met, then proceed to genome index building with bowtie. Otherwise, build or pull docker image for a complete environment which reproduces the environment used by the authors:
+
+#### Docker image
+
+To build a docker image from the Dockerfile in this repository, run the following in your Brown_2023/ directory:
+
+```
+docker build -t brown2023 -f Dockerfile ./
+```
+
+Then, to run the container:
+
+```
+docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project brown2023
+```
+
+Alternatively, pull the docker image from DockerHub:
+
+#### Install bowtie and sratoolkit
+
+To fully reproduce the results shown in this paper, install bowtie 1.2.1.1. First, download binaries from https://sourceforge.net/projects/bowtie-bio/ and extract the folder in the same directory as you cloned this repository.
+
+Additionally, sratoolkit is necessary to pull raw reads from NCBI. Download and extract sratoolkit binaries for the docker environment in the same directory:
+
+```
+wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+tar -vxzf sratoolkit.tar.gz
+```
+
+To associate these binaries with the bash profile of the docker envrionment, add the following lines to /root/.bashrc and source:
+```
+export PATH=$PATH:/project/bowtie-1.2.1.1-linux-x86_64/bowtie-1.2.1.1
+export PATH=$PATH:/project/sratoolkit.3.0.1-ubuntu64/bin
+source /root/.bashrc
+```
+
+#### get fastq files generated in this paper from NCBI
+```
+mkdir fastq
+cd fastq
+fastq-dump --gzip SRR23256087
+mv SRR23256087.fastq.gz ints1_capseq.fastq.gz
+fastq-dump --gzip SRR23256088
+mv SRR23256088.fastq.gz control_capseq.fastq.gz
+fastq-dump --gzip SRR23256089
+mv SRR23256089.fastq.gz dic1_sRNA.fastq.gz
+fastq-dump --gzip SRR23256090
+mv SRR23256090.fastq.gz ints1_sRNA.fastq.gz
+fastq-dump --gzip SRR23256091
+mv SRR23256091.fastq.gz control_ints1_dic1_sRNA.fastq.gz
+fastq-dump --gzip SRR23256092
+mv SRR23256092.fastq.gz snpc4_sRNA.fastq.gz
+fastq-dump --gzip SRR23256093
+mv SRR23256093.fastq.gz control_snpc4_sRNA.fastq.gz
+fastq-dump --gzip SRR23256094
+mv SRR23256094.fastq.gz prp17_sRNA.fastq.gz
+fastq-dump --gzip SRR23256095
+mv SRR23256095.fastq.gz npp7_sRNA.fastq.gz
+fastq-dump --gzip SRR23256096
+mv SRR23256096.fastq.gz control_npp7_prp17_sRNA.fastq.gz
+```
+
+SRA numbers almost completely mixed up!
+As of March 2023, reassign names:
+
+```
+mv npp7_sRNA.fastq.gz control_capseq.fastq.gz
+mv prp17_sRNA.fastq.gz npp7_sRNA.fastq.gz
+mv control_snpc4_sRNA.fastq.gz prp17_sRNA.fastq.gz
+mv snpc4_sRNA.fastq.gz control_snpc4_sRNA.fastq.gz
+mv control_ints1_dic1_sRNA.fastq.gz snpc4_sRNA.fastq.gz
+mv ints1_sRNA.fastq.gz control_ints1_dic1_sRNA.fastq.gz
+mv dic1_sRNA.fastq.gz ints1_sRNA.fastq.gz
+mv control_capseq.fastq.gz dic1_sRNA.fastq.gz
+```
+
+#### get fastq files for snpc-4 RNAi from Kasper et al 2014 from NCBI
+```
+fastq-dump --gzip SRR1054267
+mv SRR1054267.fastq.gz Kasper2014_control.fastq.gz
+fastq-dump --gzip SRR1054268
+mv SRR1054268.fastq.gz Kasper2014_snpc4.fastq.gz
+```
+#### Build bowtie index for genome and known RNAs
 The reference directory should contain subdirectories for the WS230 reference genome. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase.
 A bowtie index is necessary for alignment to genome, splice junctions, structural RNAs and miRNA hairpins. To build all necessary bowtie index files, run
 ```
