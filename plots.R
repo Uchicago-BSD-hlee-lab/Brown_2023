@@ -19,9 +19,9 @@ f <- function(x) {
 # To make small RNA box plots, load in small RNA master file, then compute relevant fold change and plot
 # Below is an example of this code in action used to create the plot shown in Figure 2B
 
-data_piRNA <- read.table(paste0(HOME,"/results/master/master.v0.21u.sense.txt"),sep="\t",header=T)
-data_siRNA <- read.table(paste0(HOME,"/results/master/master.v0.22G.mrna.anti.txt"),sep="\t",header=T)
-data_miRNA <- read.table(paste0(HOME,"/results/master/master.v0.mirna.sense.txt"),sep="\t",header=T)
+data_piRNA <- read.table(paste0(HOME,"/results/master.v0.21u.sense.txt"),sep="\t",header=T)
+data_siRNA <- read.table(paste0(HOME,"/results/master.v0.22G.mrna.anti.txt"),sep="\t",header=T)
+data_miRNA <- read.table(paste0(HOME,"/results/master.v0.mirna.sense.txt"),sep="\t",header=T)
 
 # arb <- sort(unique(data_siRNA$JB.20180416_RRS.L4440),decreasing = F)[2]
 arb <- 0
@@ -41,10 +41,10 @@ fold_prp17_siRNA <- log2((data_siRNA$JB.20180416_RRS.prp17+arb)/(data_siRNA$JB.2
 fold_ints1_siRNA <- log2((data_siRNA$JB.20181018_RRS.ints1+arb)/(data_siRNA$JB.20181018_RRS.L4440_ints+arb))
 fold_dic1_siRNA <- log2((data_siRNA$JB.20181018_RRS.dic1+arb)/(data_siRNA$JB.20181018_RRS.L4440_ints+arb))
 
-siRNA <- data.frame(npp7=fold_npp7_siRNA[which(data_siRNA$WAGO1.target.x==T | data_siRNA$WAGO9.target.x==T)],
-                    prp17=fold_prp17_siRNA[which(data_siRNA$WAGO1.target.x==T | data_siRNA$WAGO9.target.x==T)],
-                    ints1=fold_ints1_siRNA[which(data_siRNA$WAGO1.target.x==T | data_siRNA$WAGO9.target.x==T)],
-                    dic1=fold_dic1_siRNA[which(data_siRNA$WAGO1.target.x==T | data_siRNA$WAGO9.target.x==T)])
+siRNA <- data.frame(npp7=fold_npp7_siRNA[which(data_siRNA$WAGO1.target==T | data_siRNA$WAGO9.target==T)],
+                    prp17=fold_prp17_siRNA[which(data_siRNA$WAGO1.target==T | data_siRNA$WAGO9.target==T)],
+                    ints1=fold_ints1_siRNA[which(data_siRNA$WAGO1.target==T | data_siRNA$WAGO9.target==T)],
+                    dic1=fold_dic1_siRNA[which(data_siRNA$WAGO1.target==T | data_siRNA$WAGO9.target==T)])
 
 fold_npp7_miRNA <- log2((data_miRNA$JB.20180416_RRS.npp7+arb)/(data_miRNA$JB.20180416_RRS.L4440+arb))
 fold_prp17_miRNA <- log2((data_miRNA$JB.20180416_RRS.prp17+arb)/(data_miRNA$JB.20180416_RRS.L4440+arb))
@@ -476,8 +476,8 @@ ggsave(box_precursor,
 
 # type I vs type II piRNA accumulation shown in Figure 3B
 
-int_typeI <- read.table(paste0(HOME,"/results/master/master.v0.21u.sense.txt"),sep="\t",header=T)
-int_typeII <- read.table(paste0(HOME,"/results/master/master.v0.21u.type2.sense.txt"),sep="\t",header=T)
+int_typeI <- read.table(paste0(HOME,"/results/master.v0.21u.sense.txt"),sep="\t",header=T)
+int_typeII <- read.table(paste0(HOME,"/results/master.v0.21u.type2.sense.txt"),sep="\t",header=T)
 
 # arb <- sort(unique(int_typeII$JB.20181018_RRS.L4440.gen2),decreasing=F)[2]
 arb <- 0

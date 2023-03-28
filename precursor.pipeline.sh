@@ -1,6 +1,7 @@
 #!/bin/bash
 
 bowtie_cores=16
+HOME=`pwd`
 
 lib=$1
 sgefile="./config/qsub.$lib.sh"
