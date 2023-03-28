@@ -8,3 +8,5 @@
 /project/fastq/dic1_sRNA.fastq.gz,JB.20181018_RRS.dic1,WS230,17,40
 /project/fastq/control_capseq.fastq.gz,JB.20201013_ev,WS230,17,100
 /project/fastq/ints1_capseq.fastq.gz,JB.20201013_ints1,WS230,17,100
+/project/fastq/Kasper2014_control.fastq.gz,Kasper.2014_control,WS230,17,40
+/project/fastq/Kasper2014_snpc4.fastq.gz,Kasper.2014_snpc4,WS230,17,40
