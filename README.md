@@ -9,9 +9,10 @@ This repository holds all scripts necessary to perform small RNA alignment and p
 ### Preparation and requirements
 
 To run the pipeline script, bowtie v1.2.1.1, bedtools v2.30.0, and R v4.0.3 must be installed.
-The reference directory should contain subdirectories for the WS230 reference genome, W230 reference genome with oma-1::gfp and cdk-1::gfp transgenes added, and WS230 reference genome with mex-5p::gfp added. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase (and supplemented with pseudochromosomes corresponding to transgene sequences).
+The reference directory should contain subdirectories for the WS230 reference genome. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase.
 A bowtie index is necessary for alignment to genome, splice junctions, structural RNAs and miRNA hairpins. To build all necessary bowtie index files, run
 ```
+
 HOME=`pwd`
 cd $HOME/reference/WS230/
 path_to_genome_fasta=$HOME/reference/WS230/c_elegans.WS230.genomic.fa
@@ -28,7 +29,7 @@ Compressed fastq.gz files must be located in the fastq directory.
 
 To map reads contained in the fastq directory and calculate normalized reads per million against genes, run bowtie_alignment.sh
 ```
-sh ./bowtie_alignment.sh
+bash ./bowtie_alignment.sh
 ```
 The directory config should contain a TXT file with 3 comma separated fields fields: path to the fastq.gz file, name of the library, and the genome to use for alignment.
 
@@ -36,13 +37,13 @@ The directory config should contain a TXT file with 3 comma separated fields fie
 
 To find reads that correspond to piRNA precursor molecules, the precursor.pipeline.sh script must be run with relevant libraries
 ```
-sh ./precursor.pipeline.sh JB.20181018_RRS.L4440
-sh ./precursor.pipeline.sh JB.20181018_RRS.snpc4
-sh ./precursor.pipeline.sh JB.20181018_RRS.L4440_ints
-sh ./precursor.pipeline.sh JB.20181018_RRS.ints1
-sh ./precursor.pipeline.sh JB.20181018_RRS.dic1
-sh ./precursor.pipeline.sh JB.20201013_ev
-sh ./precursor.pipeline.sh JB.20201013_ints1
+bash ./precursor.pipeline.sh JB.20181018_RRS.L4440
+bash ./precursor.pipeline.sh JB.20181018_RRS.snpc4
+bash ./precursor.pipeline.sh JB.20181018_RRS.L4440_ints
+bash ./precursor.pipeline.sh JB.20181018_RRS.ints1
+bash ./precursor.pipeline.sh JB.20181018_RRS.dic1
+bash ./precursor.pipeline.sh JB.20201013_ev
+bash ./precursor.pipeline.sh JB.20201013_ints1
 ```
 The alignment script must be run prior to this step.
 
