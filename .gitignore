@@ -7,9 +7,14 @@ sratoolkit.tar.gz
 fastq/
 scratch/
 results/
+termination/
 
 # genome fasta
 reference/WS230/*genomic.fa
 
 # bowtie index files
 reference/WS230/*.ebwt
+
+# temporary config files
+config/file_info_Kasper.txt
+config/qsub.*
