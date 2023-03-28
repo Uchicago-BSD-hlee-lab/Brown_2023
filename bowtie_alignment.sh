@@ -177,22 +177,22 @@ for ((i=0;i<=$((${#fn_array[@]}-1));i++)); do
 done
 wait
 
-mkdir $HOME/results/master
+cd $HOME
 
 # mirna master file
-Rscript merge.mirna.R ${name_array[@]} v0.mirna.sense
+Rscript $HOME/scripts/merge.mirna.R ${name_array[@]} v0.mirna.sense
 
 # 21U master file
-Rscript merge.21rmsk.R ${name_array[@]} v0.21u.sense
-Rscript merge.21rmsk.R ${name_array[@]} v0.21u.type2.sense
+Rscript $HOME/scripts/merge.21rmsk.R ${name_array[@]} v0.21u.sense
+Rscript $HOME/scripts/merge.21rmsk.R ${name_array[@]} v0.21u.type2.sense
 
 # 22G master file
-Rscript merge.R ${name_array[@]} v0.22G.mrna.anti
-Rscript merge.21rmsk.R ${name_array[@]} v0.22G.rmsk.anti
+Rscript $HOME/scripts/merge.R ${name_array[@]} v0.22G.mrna.anti
+Rscript $HOME/scripts/merge.21rmsk.R ${name_array[@]} v0.22G.rmsk.anti
 
 # 26G master file
-Rscript merge.R ${name_array[@]} v0.26G.mrna.anti
+Rscript $HOME/scripts/merge.R ${name_array[@]} v0.26G.mrna.anti
 
-Rscript merge.R ${name_array[@]} v0.mrna.sense
-Rscript merge.R ${name_array[@]} v0.mrna.anti
+Rscript $HOME/scripts/merge.R ${name_array[@]} v0.mrna.sense
+Rscript $HOME/scripts/merge.R ${name_array[@]} v0.mrna.anti
 

@@ -22,4 +22,4 @@ for (x in 1:(length(args)-1)){
 colnames(master) <- c("Gene.ID","name","cosmid",
                                             args[1:(length(args)-2)])
 
-write.table(master,paste("master.",type,".txt",sep=""),sep="\t",quote=F,row.names=F,na="0")
+write.table(master,paste(HOME,"/results/master.",type,".txt",sep=""),sep="\t",quote=F,row.names=F,na="0")
