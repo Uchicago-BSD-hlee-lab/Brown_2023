@@ -20,11 +20,20 @@ RUN apt-get --allow-releaseinfo-change update -y && \
     r-cran-xml \
     pandoc \
     cutadapt \
-    bedtools
+    bedtools \
+    cmake
 
 
 RUN Rscript -e """\
-install.packages(c(\"languageserver\", \"systemfonts\", \"devtools\", \"ggplot2\", \"dplyr\", \"reshape2\", \"ggsci\", \"BiocManager\", \"openxlsx\", \"rmarkdown\")) \
+install.packages(c(\"languageserver\", \"systemfonts\", \"devtools\", \"ggplot2\", \"dplyr\", \"reshape2\", \"ggsci\", \"BiocManager\", \"openxlsx\", \"rmarkdown\", \"ggpubr\")) \
+"""
+
+RUN Rscript -e """\
+install.packages(\"https://cran.r-project.org/src/contrib/Archive/pbkrtest/pbkrtest_0.4-4.tar.gz\", repos = NULL, type = \"source\")
+"""
+
+RUN Rscript -e """\
+install.packages(\"ggpubr\")
 """
 
 RUN Rscript -e """\
