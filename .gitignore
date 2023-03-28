@@ -1,0 +1,15 @@
+# binary files for packages
+bowtie*/
+sratoolkit*/
+sratoolkit.tar.gz
+
+# data directories
+fastq/
+scratch/
+results/
+
+# genome fasta
+reference/WS230/*genomic.fa
+
+# bowtie index files
+reference/WS230/*.ebwt
