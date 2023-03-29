@@ -180,16 +180,16 @@ expand_uniq <- function(precursor.df,overhang.5,pirna_bed){
 
 
 wt.df <- readRDS(paste0(HOME,"/termination/JB.20201013_ev/precursor.df"))
-inst1.df <- readRDS(paste0(HOME,"/termination/JB.20201013_ints1/precursor.df"))
+ints1.df <- readRDS(paste0(HOME,"/termination/JB.20201013_ints1/precursor.df"))
 
-wt.expand <- expand(wt.df,2,pirna_bed)
-ints1.expand <- expand(ints1.df,2,pirna_bed)
+# wt.expand <- expand(wt.df,2,pirna_bed)
+# ints1.expand <- expand(ints1.df,2,pirna_bed)
 
 wt.expand.uniq <- expand_uniq(wt.df,2,pirna_bed)
 ints1.expand.uniq <- expand_uniq(ints1.df,2,pirna_bed)
 
-wt_no.overhang.rq.expand <- expand(wt.df,NA,pirna_bed)
-ints1_no.overhang.rq.expand <- expand(ints1.df,NA,pirna_bed)
+# wt_no.overhang.rq.expand <- expand(wt.df,NA,pirna_bed)
+# ints1_no.overhang.rq.expand <- expand(ints1.df,NA,pirna_bed)
 
 
 
@@ -200,9 +200,9 @@ expand.df <- data.frame(precursor_length=c(wt.expand.uniq$lengths,
                         precursor_type=c(as.character(wt.expand.uniq$types),
                                          as.character(ints1.expand.uniq$types)),
                         library=factor(x=c(rep("WT",times=nrow(wt.expand.uniq)),
-                                           rep("inst-1",times=nrow(ints1.expand.uniq))),
+                                           rep("ints-1",times=nrow(ints1.expand.uniq))),
                                        ordered=T,
-                                       levels=c("WT","inst-1")))
+                                       levels=c("WT","ints-1")))
 ggdens <- function(df){
   ggplot(data=df,aes(x=precursor_length,fill=library,color=library))+
     theme_bw(base_size = 20)+theme(aspect.ratio = 0.5,
@@ -242,9 +242,15 @@ plot_density <- function(expand.df,lib1,lib2,sub){
   
 }
 
-dens <- plot_density(expand.df,"WT","inst-1",sub=0)
+dens <- plot_density(expand.df,"WT","ints-1",sub=0)
 
-
+ggsave(
+  plot=dens,
+  filename="dens.pdf",
+  path=paste0(HOME,"/results/"),
+  device="pdf",
+  dpi=300,height=5,width=5
+)
 
 
 # define most snpc-4 dependent loci for figure 3A snpc-4 dependent integrator plots
@@ -280,20 +286,17 @@ df <- data.frame(snpc4_log2,
 snpc4_coor <- which(df$snpc4_log2<(-1) & df$snpc4_nlog10>(-log10(alpha)))
 df_snpc4 <- df[snpc4_coor,]
 snpc4_names <- data_piRNA$Gene.ID[snpc4_coor]
-for (x in 1:length(snpc4_names)){
-  snpc4_names[x] <- gsub(pattern="21ur-",x=snpc4_names[x],replacement = "X21ur.")
-}
 
 # construct combined piRNA precursor dataframe and compare snpc-4 dependent loci (Figure 3A)
 
 arb <- unique(sort(data_piRNA$JB.20181018_RRS.L4440))[2]
 
 
-wt_snpc4.df <- readRDS(paste0(HOME,"/termination/JB.20181018_L4440/precursor.df"))
-wt_ints.df <- readRDS(paste0(HOME,"/termination/JB.20181018_L4440_ints/precursor.df"))
-ints1.df <- readRDS(paste0(HOME,"/termination/JB.20181018_inst1/precursor.df"))
-dic1.df <- readRDS(paste0(HOME,"/termination/JB.20181018_dic1/precursor.df"))
-snpc4.df <- readRDS(paste0(HOME,"/termination/JB.20181018_snpc4/precursor.df"))
+wt_snpc4.df <- readRDS(paste0(HOME,"/termination/JB.20181018_RRS.L4440/precursor.df"))
+wt_ints.df <- readRDS(paste0(HOME,"/termination/JB.20181018_RRS.L4440_ints/precursor.df"))
+ints1.df <- readRDS(paste0(HOME,"/termination/JB.20181018_RRS.ints1/precursor.df"))
+dic1.df <- readRDS(paste0(HOME,"/termination/JB.20181018_RRS.dic1/precursor.df"))
+snpc4.df <- readRDS(paste0(HOME,"/termination/JB.20181018_RRS.snpc4/precursor.df"))
 
 precursor.df.conservative.construct <- function(precursor.df,req){
   if (req=="overhang"){
@@ -377,18 +380,16 @@ colnames(mature.df) <- c("piRNA",
 
 mature.df[is.na(mature.df)] <- 0
 
-mature.df <- merge(mature.df,tm_scores_sub,by.x="piRNA",by.y="name",all.x=T)
-
 # determine normalization strategy used in bowtie_alignment.sh script and apply to piRNA read counts here
 
 mature_call <- mature.df[which(mature.df$piRNA=="21ur-1000"),]
-master_call <- master.21u[which(master.21u$Gene.ID=="21ur-1000"),]
+master_call <- data_piRNA[which(data_piRNA$Gene.ID=="21ur-1000"),]
 
-wt_snpc4_total <- mature_call$reads_wt_snpc4/master_call$JB.20181018_RRS.L4440.gen1*10^6
-wt_ints_total <- mature_call$reads_wt_ints/master_call$JB.20181018_RRS.L4440.gen2*10^6
-ints1_total <- mature_call$reads_ints1/master_call$JB.20181018_RRS.ints1.gen2*10^6
-dic1_total <- mature_call$reads_dic1/master_call$JB.20181018_RRS.dic1.gen2*10^6
-snpc4_total <- mature_call$reads_snpc4/master_call$JB.20181018_RRS.snpc4.gen1*10^6
+wt_snpc4_total <- mature_call$reads_wt_snpc4/master_call$JB.20181018_RRS.L4440*10^6
+wt_ints_total <- mature_call$reads_wt_ints/master_call$JB.20181018_RRS.L4440_ints*10^6
+ints1_total <- mature_call$reads_ints1/master_call$JB.20181018_RRS.ints1*10^6
+dic1_total <- mature_call$reads_dic1/master_call$JB.20181018_RRS.dic1*10^6
+snpc4_total <- mature_call$reads_snpc4/master_call$JB.20181018_RRS.snpc4*10^6
 
 precursor.df$rpm_wt_snpc4 <- precursor.df$reads_wt_snpc4*10^6/wt_snpc4_total
 precursor.df$rpm_wt_ints <- precursor.df$reads_wt_ints*10^6/wt_ints_total
@@ -488,8 +489,8 @@ int_typeI$dic1_fold <- log2((int_typeI$JB.20181018_RRS.dic1+arb)/(int_typeI$JB.2
 int_typeII$ints1_fold <- log2((int_typeII$JB.20181018_RRS.ints1+arb)/(int_typeII$JB.20181018_RRS.L4440_ints+arb))
 int_typeII$dic1_fold <- log2((int_typeII$JB.20181018_RRS.dic1+arb)/(int_typeII$JB.20181018_RRS.L4440_ints+arb))
 
-int_typeI_melt <- melt(int_typeI[,c(1,11:12)])
-int_typeII_melt <- melt(int_typeII[,c(1,11:12)])
+int_typeI_melt <- melt(int_typeI[,c(1,16:17)])
+int_typeII_melt <- melt(int_typeII[,c(1,16:17)])
 
 int_typeI_melt$type <- paste("TypeI piRNA\nN=",nrow(int_typeI),sep="")
 int_typeII_melt$type <- paste("TypeII piRNA\nN=",nrow(int_typeII),sep="")
