@@ -6,13 +6,15 @@ library(Biostrings)
 library(ggplot2)
 library(parallel)
 
-library <- commandArgs(T)
+args <- commandArgs(T)
+library <- args[1]
+cores <- args[2]
 
 genome <- readDNAStringSet(paste0(HOME,"/reference/WS230/c_elegans.WS230.genomic.fa"))
 
 mature.bed <- read.table(paste0(HOME,"/reference/WS230/ce_WS230.pirna.bed"),sep="\t",header=F)
 file_path <- paste0(HOME,"/termination/",library,"/",library,".precursor.v0.bowtie")
-precursor.bed <- read.table(file=file_path,sep="\t",header=F,skipNul = T)
+precursor.bed <- read.table(file=file_path,sep="\t",header=F,skipNul = T, nrows = 10000)
 uniq.precursor.bed <- unique(precursor.bed)
 print("data loaded")
 precursor.df <- NULL
@@ -43,7 +45,7 @@ construct.df <- function(i){
   row.tmp
 }
 
-precursor.ls <- mclapply(FUN=construct.df,X=x)
+precursor.ls <- mclapply(FUN=construct.df,X=x,mc.cores = cores)
 
 saveRDS(precursor.ls,file=paste0(HOME,"/termination/",library,"/","precursor.ls"))
 precursor.df <- as.data.frame(do.call(rbind,precursor.ls))
