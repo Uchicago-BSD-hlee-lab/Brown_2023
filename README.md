@@ -6,6 +6,8 @@ This repository holds all scripts necessary to perform small RNA alignment and p
 
 ### Preparation and requirements
 
+---
+
 First, clone repository into working directory:
 
 ```bash
@@ -14,7 +16,7 @@ git clone https://github.com/jordan-scot-brown/Brown_2023.git
 
 To run the pipeline script, bowtie v1.2.1.1, bedtools v2.30.0, R v4.0.3, and various R packages must be installed. If these requirements are met, then proceed to genome index building with bowtie. Otherwise, build or pull docker image for a complete environment which reproduces the environment used by the authors:
 
-#### Docker image
+### Docker image
 
 To build a docker image from the Dockerfile in this repository, run the following in your Brown_2023/ directory:
 
@@ -30,7 +32,7 @@ docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project brown2023
 
 Alternatively, pull the docker image from DockerHub:
 
-#### Install bowtie and sratoolkit
+### Install bowtie and sratoolkit
 
 To fully reproduce the results shown in this paper, install bowtie 1.2.1.1. First, download binaries from <https://sourceforge.net/projects/bowtie-bio/> and extract the folder in the same directory as you cloned this repository.
 
@@ -49,7 +51,7 @@ export PATH=$PATH:/project/sratoolkit.3.0.1-ubuntu64/bin
 source /root/.bashrc
 ```
 
-#### get fastq files generated in this paper from NCBI
+### Get fastq files generated in this paper from NCBI
 
 ```bash
 mkdir fastq
@@ -101,7 +103,7 @@ fastq-dump --gzip SRR1054268
 mv SRR1054268.fastq.gz Kasper2014_snpc4.fastq.gz
 ```
 
-#### Build bowtie index for genome and known RNAs
+### Build bowtie index for genome and known RNAs
 
 The reference directory should contain subdirectories for the WS230 reference genome. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase.
 A bowtie index is necessary for alignment to genome, splice junctions, structural RNAs and miRNA hairpins. To build all necessary bowtie index files, run
@@ -122,6 +124,8 @@ Note: Compressed fastq.gz files must be located in the fastq directory.
 
 ### Alignment script
 
+---
+
 To map reads contained in the fastq directory and calculate normalized reads per million against genes, run bowtie_alignment.sh
 
 ```bash
@@ -131,6 +135,8 @@ bash ./bowtie_alignment.sh
 The directory config should contain a TXT file with 3 comma separated fields fields: path to the fastq.gz file, name of the library, and the genome to use for alignment.
 
 ### piRNA precursor script
+
+---
 
 To find reads that correspond to piRNA precursor molecules, the precursor.pipeline.sh script must be run with relevant libraries
 
@@ -146,24 +152,20 @@ bash ./precursor.pipeline.sh JB.20201013_ints1
 
 The alignment script must be run prior to this step.
 
-### Browser image and metagene construction
+### Figure construction
+
+---
 
 Run plots.R to use data generated in the bowtie_alignment.sh and precursor.pipeline.sh scripts to construct plots shown in Figure 2B, Figure S2C, Figure 3A, and Figure 3B.
 This script depends on R libraries:
 
-ggplot2
-
-scales
-
-reshape2
-
-ggpubr
-
-gridExtra
-
-dplyr
-
-rstatix
+* ggplot2
+* scales
+* reshape2
+* ggpubr
+* gridExtra
+* dplyr
+* rstatix
 
 ```bash
 Rscript ./plots.R
