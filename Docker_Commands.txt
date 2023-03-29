@@ -1,5 +1,0 @@
-docker build -t brown2023 -f Dockerfile ./
-
-GIT_PATH=`pwd`
-
-docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project brown2023
