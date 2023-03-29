@@ -13,13 +13,15 @@ name_array=()
 WSnum_array=()
 min_array=()
 max_array=()
+adaptor_array=()
 
-while IFS=, read -r col1 col2 col3 col4 col5; do
+while IFS=, read -r col1 col2 col3 col4 col5 col6; do
 	fn_array+=($col1)
 	name_array+=($col2)
 	WSnum_array+=($col3)
 	min_array+=($col4)
 	max_array+=($col5)
+	adaptor_array+=($col6)
 done < $HOME/config/file_info.txt
 
 pipeline () {
@@ -29,6 +31,7 @@ pipeline () {
 	local WSnum=$3
 	local min=$4
 	local max=$5
+	local adaptor=$6
 
 	wdir=$HOME/scratch/$name
 	mkdir $wdir
@@ -38,7 +41,7 @@ pipeline () {
 	cp $HOME/reference/geneIDs.WS230 ./
 
 	# trim barcode and 3' linker
-	zcat $fn | $HOME/scripts/Extract_insert_6mer_1mm.pl - AGATCGGAAGAGCACACGTCT | cut -f1 | awk '{ if(length($1)>16) print}' > $name.inserts
+	zcat $fn | $HOME/scripts/Extract_insert_6mer_1mm.pl - $adaptor | cut -f1 | awk '{ if(length($1)>16) print}' > $name.inserts
 
 	$HOME/scripts/inserts2uniqreads.pl $name.inserts $min $max > $name.inserts.uniq.reads
 
@@ -173,7 +176,7 @@ pipeline () {
 }
 
 for ((i=0;i<=$((${#fn_array[@]}-1));i++)); do
-	pipeline ${fn_array[i]} ${name_array[i]} ${WSnum_array[i]} ${min_array[i]} ${max_array[i]}
+	pipeline ${fn_array[i]} ${name_array[i]} ${WSnum_array[i]} ${min_array[i]} ${max_array[i]} ${adaptor_array[i]}
 done
 wait
 
