@@ -20,6 +20,6 @@ for (x in 1:(length(args)-1)){
 }
 
 colnames(master) <- c("Gene.ID","Gene.name","Locus.name","CSR.target","WAGO1.target","WAGO9.target",
-                                            args[1:(length(args)-2)])
+                                            args[1:(length(args)-1)])
 
 write.table(master,paste(HOME,"/results/master.",type,".txt",sep=""),sep="\t",quote=F,row.names=F,na="0")
