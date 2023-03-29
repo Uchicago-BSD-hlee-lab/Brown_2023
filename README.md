@@ -27,6 +27,7 @@ docker build -t brown2023 -f Dockerfile ./
 Then, to run the container:
 
 ```bash
+GIT_PATH=`pwd`
 docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project brown2023
 ```
 
@@ -43,7 +44,7 @@ wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/
 tar -vxzf sratoolkit.tar.gz
 ```
 
-To associate these binaries with the bash profile of the docker envrionment, add the following lines to /root/.bashrc and source:
+To associate these binaries with the bash profile of the docker envrionment, add the following lines to `/root/.bashrc` and `source`:
 
 ```bash
 export PATH=$PATH:/project/bowtie-1.2.1.1-linux-x86_64/bowtie-1.2.1.1
@@ -78,7 +79,7 @@ fastq-dump --gzip SRR23256096
 mv SRR23256096.fastq.gz control_npp7_prp17_sRNA.fastq.gz
 ```
 
-SRA numbers almost all completely mixed up!
+SRA numbers almost all completely mixed up!  
 As of March 2023, reassign names:
 
 SRA number | NCBI sample label | correct sample label
@@ -94,7 +95,7 @@ SRR23256089 | dic1_sRNA | ints1_sRNA
 SRR23256088 | control_capseq | dic1_sRNA
 SRR23256087 | ints1_capseq | ints1_capseq
 
-#### get fastq files for snpc-4 RNAi from Kasper et al 2014 from NCBI
+### Get fastq files for snpc-4 RNAi from Kasper et al 2014 from NCBI
 
 ```bash
 fastq-dump --gzip SRR1054267
@@ -105,8 +106,8 @@ mv SRR1054268.fastq.gz Kasper2014_snpc4.fastq.gz
 
 ### Build bowtie index for genome and known RNAs
 
-The reference directory should contain subdirectories for the WS230 reference genome. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase.
-A bowtie index is necessary for alignment to genome, splice junctions, structural RNAs and miRNA hairpins. To build all necessary bowtie index files, run
+The reference directory should contain subdirectories for the WS230 reference genome. All subdirectories should contain the WS230 genome in FASTA format, available from Wormbase.  
+A bowtie index is necessary for alignment to genome, splice junctions, structural RNAs and miRNA hairpins. To build all necessary bowtie index files, run:
 
 ```bash
 
@@ -156,7 +157,7 @@ The alignment script must be run prior to this step.
 
 ---
 
-Run plots.R to use data generated in the bowtie_alignment.sh and precursor.pipeline.sh scripts to construct plots shown in Figure 2B, Figure S2C, Figure 3A, and Figure 3B.
+Run plots.R to use data generated in the bowtie_alignment.sh and precursor.pipeline.sh scripts to construct plots shown in Figure 2B, Figure S2C, Figure 3A, and Figure 3B.  
 This script depends on R libraries:
 
 * ggplot2
