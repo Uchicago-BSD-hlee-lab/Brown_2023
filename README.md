@@ -142,13 +142,7 @@ The directory config should contain a TXT file with 3 comma separated fields fie
 To find reads that correspond to piRNA precursor molecules, the precursor.pipeline.sh script must be run with relevant libraries
 
 ```bash
-bash ./precursor.pipeline.sh JB.20181018_RRS.L4440
-bash ./precursor.pipeline.sh JB.20181018_RRS.snpc4
-bash ./precursor.pipeline.sh JB.20181018_RRS.L4440_ints
-bash ./precursor.pipeline.sh JB.20181018_RRS.ints1
-bash ./precursor.pipeline.sh JB.20181018_RRS.dic1
-bash ./precursor.pipeline.sh JB.20201013_ev
-bash ./precursor.pipeline.sh JB.20201013_ints1
+bash ./precursor.pipeline.sh
 ```
 
 The alignment script must be run prior to this step.
