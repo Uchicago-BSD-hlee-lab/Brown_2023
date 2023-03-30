@@ -252,6 +252,14 @@ ggsave(
   dpi=300,height=5,width=5
 )
 
+ggsave(
+  plot=dens,
+  filename="dens.png",
+  path=paste0(HOME,"/results/"),
+  device="png",
+  dpi=300,height=5,width=5
+)
+
 
 # define most snpc-4 dependent loci for figure 3A snpc-4 dependent integrator plots
 
@@ -472,6 +480,11 @@ ggsave(box_precursor,
        path=paste0(HOME,"/results/"),
        filename="box_precursor.pdf",
        device="pdf",dpi=300,width=10,height=5)
+
+ggsave(box_precursor,
+       path=paste0(HOME,"/results/"),
+       filename="box_precursor.png",
+       device="png",dpi=300,width=10,height=5)
 
 
 
