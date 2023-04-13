@@ -79,22 +79,6 @@ fastq-dump --gzip SRR23256096
 mv SRR23256096.fastq.gz control_npp7_prp17_sRNA.fastq.gz
 ```
 
-SRA numbers almost all completely mixed up!  
-As of March 2023, reassign names:
-
-SRA number | NCBI sample label | correct sample label
-:---: | :---: | :---:
-SRR23256096 | control_npp7_prp17_sRNA | control_npp7_prp17_sRNA
-SRR23256095 | npp7_sRNA | control_capseq
-SRR23256094 | prp17_sRNA | npp7_sRNA
-SRR23256093 | control_snpc4_sRNA | prp17_sRNA
-SRR23256092 | snpc4_sRNA | control_snpc4_sRNA
-SRR23256091 | control_ints1_dic1_sRNA | snpc4_sRNA
-SRR23256090 | ints1_sRNA | control_ints1_dic1_sRNA
-SRR23256089 | dic1_sRNA | ints1_sRNA
-SRR23256088 | control_capseq | dic1_sRNA
-SRR23256087 | ints1_capseq | ints1_capseq
-
 ### Get fastq files for snpc-4 RNAi from Kasper et al 2014 from NCBI
 
 ```bash

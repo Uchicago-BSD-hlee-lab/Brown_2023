@@ -19,5 +19,5 @@ reference/WS230/*.ebwt
 config/file_info_Kasper.txt
 config/qsub.*
 
-# sensitive files
-.gitconfig
+*.Rhistory
+*.gitconfig
