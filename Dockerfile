@@ -29,11 +29,11 @@ install.packages(c(\"languageserver\", \"systemfonts\", \"devtools\", \"ggplot2\
 """
 
 RUN Rscript -e """\
-install.packages(\"https://cran.r-project.org/src/contrib/Archive/pbkrtest/pbkrtest_0.4-4.tar.gz\", repos = NULL, type = \"source\")
+install.packages(\"https://cran.r-project.org/src/contrib/Archive/pbkrtest/pbkrtest_0.4-4.tar.gz\", repos = NULL, type = \"source\") \
 """
 
 RUN Rscript -e """\
-install.packages(\"ggpubr\")
+install.packages(\"ggpubr\") \
 """
 
 RUN Rscript -e """\

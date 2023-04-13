@@ -82,9 +82,10 @@ pipeline () {
 	cat $name.inserts.xkxh.uniq.reads.v0.ntm $name.inserts.xkxh.uniq.reads.juncs.v0.ntm | cut -f4 | $HOME/scripts/weedLines stdin $name.inserts.xkxh.uniq.reads -invert $name.inserts.xkxh.uniq.reads.mapped
 	 
 	# variables for R quantification
-	num=`cut -f2 $name.inserts.xk.uniq.reads.mapped | $HOME/scripts/addCols stdin`
-	num2=$num   ## `addCols $name.inserts.xkxh.uniq.reads.mapped | awk '{ print $2 }'`
-	 
+	intersectBed -a $name.inserts.xk.uniq.reads.v0.ntm -b $HOME/reference/$WSnum/ce_WS230.ncrna.mirna.mirbase.bed -wo | $HOME/scripts/intersectBed2Best.pl > $name.mirna
+	num=`Rscript $HOME/scripts/calculate_norm.r $name.mirna placeholder cosmid $HOME/reference/germline_enriched_miRNAs_Minogue_2018`
+	num2=$num
+
 	# quantify the 21U (type-1)
 	intersectBed -a $name.inserts.xkxh.uniq.reads.v0.ntm -b $HOME/reference/$WSnum/ce_WS230.ncrna.21urn.bed -f 1 -r -wo | $HOME/scripts/intersectBed2Best.pl > tmp2
 	Rscript pipeline.ce.quantify.tu.R tmp2 $name.inserts.xkxh.uniq.reads.v0.21u $num cosmid WS230
