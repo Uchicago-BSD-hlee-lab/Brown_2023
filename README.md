@@ -33,6 +33,11 @@ docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project brown2023
 
 Alternatively, pull the docker image from DockerHub:
 
+```bash
+docker pull jordansbrown/brown2023:current
+docker run -it --name brown2023_c1 -p 8889:8889 -v $GIT_PATH/:/project jordansbrown/brown2023:current
+```
+
 ### Install bowtie and sratoolkit
 
 To fully reproduce the results shown in this paper, install bowtie 1.2.1.1. First, download binaries from <https://sourceforge.net/projects/bowtie-bio/> and extract the folder in the same directory as you cloned this repository.
